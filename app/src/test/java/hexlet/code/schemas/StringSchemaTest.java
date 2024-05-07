@@ -20,13 +20,12 @@ public class StringSchemaTest {
     @Test
     public void testMinLengthWithRequired() {
         Validator v = new Validator();
-        StringSchema schema = v.string().minLength(MIN_LENGTH).required(); // Теперь добавляем required()
+        StringSchema schema = v.string().minLength(MIN_LENGTH).required();
 
         assertThat(schema.isValid("hex")).isFalse();
         assertThat(schema.isValid("hexlet")).isTrue();
         assertThat(schema.isValid("")).isFalse();
     }
-
 
     @Test
     public void testContains() {
@@ -43,8 +42,16 @@ public class StringSchemaTest {
         StringSchema schema = v.string().required().minLength(MIN_LENGTH).contains("hex");
 
         assertThat(schema.isValid("hexlet")).isTrue();
-        assertThat(schema.isValid("hello")).isFalse();
-        assertThat(schema.isValid("hex")).isFalse();
+        assertThat(schema.isValid("hello")).isFalse(); // Does not contain "hex"
+        assertThat(schema.isValid("hex")).isFalse(); // Does not meet minLength
         assertThat(schema.isValid(null)).isFalse();
+    }
+
+    @Test
+    public void testEmptyStringIsValidIfNotRequired() {
+        Validator v = new Validator();
+        StringSchema schema = v.string(); // Not required
+
+        assertThat(schema.isValid("")).isTrue();
     }
 }
