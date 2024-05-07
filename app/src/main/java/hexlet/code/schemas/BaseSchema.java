@@ -3,7 +3,11 @@ package hexlet.code.schemas;
 public abstract class BaseSchema<T> {
     private boolean isRequired = false;
 
-    public final BaseSchema<T> required() {
+    /**
+     *
+     * @return qwerty
+     */
+    public BaseSchema<T> required() {
         this.isRequired = true;
         return this;
     }

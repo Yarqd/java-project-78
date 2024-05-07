@@ -18,6 +18,9 @@ public class NumberSchema extends BaseSchema<Integer> {
 
     @Override
     protected final boolean checkAdditionalConditions(Integer value) {
+        if (value == null) {
+            return true; // Если null, и проверка не на required, считаем значение корректным.
+        }
         if (isPositive && value <= 0) {
             return false;
         }
@@ -25,5 +28,11 @@ public class NumberSchema extends BaseSchema<Integer> {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public final NumberSchema required() {
+        super.required();
+        return this;
     }
 }
