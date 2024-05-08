@@ -5,29 +5,29 @@ import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.MapSchema;
 
 /**
- * This class provides methods to create various types of validation schemas.
+ * Класс предоставляет методы для создания различных типов схем валидации.
  */
 public class Validator {
 
     /**
-     * Creates and returns a new StringSchema.
-     * @return a new instance of StringSchema
+     * Создает и возвращает новый объект StringSchema.
+     * @return новый экземпляр StringSchema
      */
     public StringSchema string() {
         return new StringSchema();
     }
 
     /**
-     * Creates and returns a new NumberSchema.
-     * @return a new instance of NumberSchema
+     * Создает и возвращает новый объект StringSchema.
+     * @return новый экземпляр StringSchema
      */
     public NumberSchema number() {
         return new NumberSchema();
     }
 
     /**
-     * Creates and returns a new MapSchema.
-     * @return a new instance of MapSchema
+     * Создает и возвращает новый объект MapSchema.
+     * @return новый экземпляр MapSchema
      */
     public MapSchema map() {
         return new MapSchema();

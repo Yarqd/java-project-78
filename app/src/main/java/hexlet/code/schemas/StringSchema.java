@@ -1,10 +1,11 @@
 package hexlet.code.schemas;
 
-public class StringSchema {
+public class StringSchema extends BaseSchema<String> {
     private boolean required = false;
     private int minLength = -1;
     private String substring = null;
 
+    @Override
     public final StringSchema required() {
         this.required = true;
         return this;
@@ -20,6 +21,7 @@ public class StringSchema {
         return this;
     }
 
+    @Override
     public final boolean isValid(String value) {
         if (value == null) {
             return !required;
@@ -33,6 +35,11 @@ public class StringSchema {
         if (substring != null && !value.contains(substring)) {
             return false;
         }
+        return true;
+    }
+
+    @Override
+    protected final boolean checkAdditionalConditions(String value) {
         return true;
     }
 }

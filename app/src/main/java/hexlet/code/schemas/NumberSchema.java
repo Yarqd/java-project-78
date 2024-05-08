@@ -19,7 +19,7 @@ public class NumberSchema extends BaseSchema<Integer> {
     @Override
     protected final boolean checkAdditionalConditions(Integer value) {
         if (value == null) {
-            return true; // Если null, и проверка не на required, считаем значение корректным.
+            return true;
         }
         if (isPositive && value <= 0) {
             return false;
