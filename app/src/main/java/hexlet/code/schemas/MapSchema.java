@@ -5,7 +5,8 @@ import java.util.HashMap;
 
 public class MapSchema extends BaseSchema<Map<String, Object>> {
     private Integer requiredSize = null;
-    private Map<String, BaseSchema<?>> shapeSchemas = new HashMap<>();
+    // Используйте Map<String, ? extends BaseSchema<?>> для более гибкой совместимости
+    private Map<String, ? extends BaseSchema<?>> shapeSchemas = new HashMap<>();
 
     public final MapSchema required() {
         super.required();
@@ -17,7 +18,8 @@ public class MapSchema extends BaseSchema<Map<String, Object>> {
         return this;
     }
 
-    public final MapSchema shape(Map<String, BaseSchema<?>> schemas) {
+    // Принимайте Map<String, ? extends BaseSchema<?>> для большей совместимости с тестами
+    public final MapSchema shape(Map<String, ? extends BaseSchema<?>> schemas) {
         this.shapeSchemas = schemas;
         return this;
     }
@@ -27,11 +29,12 @@ public class MapSchema extends BaseSchema<Map<String, Object>> {
         if (requiredSize != null && (value == null || value.size() != requiredSize)) {
             return false;
         }
+        // Проверка на соответствие каждому ключу согласно определённой схеме
         if (!shapeSchemas.isEmpty()) {
-            for (Map.Entry<String, BaseSchema<?>> entry : shapeSchemas.entrySet()) {
+            for (Map.Entry<String, ? extends BaseSchema<?>> entry : shapeSchemas.entrySet()) {
                 String key = entry.getKey();
                 BaseSchema<?> schema = entry.getValue();
-                Object val = value.get(key);
+                Object val = value != null ? value.get(key) : null;
 
                 if (!value.containsKey(key) || !schema.validate(val)) {
                     return false;
