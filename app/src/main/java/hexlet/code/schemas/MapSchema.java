@@ -33,7 +33,7 @@ public class MapSchema extends BaseSchema<Map<String, String>> {
                 BaseSchema<String> schema = entry.getValue();
                 String val = value != null ? value.get(key) : null;
 
-                if (!value.containsKey(key) || !schema.validate(val)) {
+                if (!value.containsKey(key) || !schema.isValid(val)) {
                     return false;
                 }
             }

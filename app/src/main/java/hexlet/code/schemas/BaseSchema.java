@@ -1,40 +1,45 @@
 package hexlet.code.schemas;
 
+/**
+ * Abstract base class for all schemas.
+ * @param <T> the type of data to validate
+ */
 public abstract class BaseSchema<T> {
     private boolean isRequired = false;
 
     /**
-     * Устанавливает схему как обязательную для валидации.
-     * @return Возвращает текущий объект схемы с установленным флагом обязательности.
+     * Sets this schema as required.
+     * @return this schema instance
      */
-
     public BaseSchema<T> required() {
         this.isRequired = true;
         return this;
     }
 
     /**
-     * Проверяет, соответствует ли предоставленное значение определенным условиям схемы.
-     * Этот метод следует переопределять в подклассах для добавления специфичных для типа проверок.
-     *
-     * @param value значение, которое нужно проверить
-     * @return true, если значение соответствует схеме, иначе false
+     * Checks if this schema is marked as required.
+     * @return true if this schema is required, false otherwise
      */
-    public boolean isValid(T value) {
+    public boolean isRequired() {
+        return this.isRequired;
+    }
+
+    /**
+     * Validates the given value against this schema.
+     * @param value the value to validate
+     * @return true if the value is valid, false otherwise
+     */
+    public final boolean isValid(T value) {
         if (value == null) {
-            return !isRequired;
+            return !this.isRequired;
         }
         return checkAdditionalConditions(value);
     }
 
-    public final boolean validate(Object value) {
-        try {
-            T castedValue = (T) value;
-            return isValid(castedValue);
-        } catch (ClassCastException e) {
-            return false;
-        }
-    }
-
+    /**
+     * Abstract method to check additional conditions specific to each schema type.
+     * @param value the value to validate
+     * @return true if the value meets all conditions, false otherwise
+     */
     protected abstract boolean checkAdditionalConditions(T value);
 }
