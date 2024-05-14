@@ -13,30 +13,25 @@ public class MapSchemaTest {
         Validator v = new Validator();
         MapSchema schema = v.map();
 
-        // Инициализируем схемы для валидации значений в Map
         Map<String, BaseSchema<String>> schemas = new HashMap<>();
-        schemas.put("firstName", v.string().required());  // Для firstName требуется непустое значение
-        schemas.put("lastName", v.string().required().minLength(2)); // Для lastName требуется минимум 2 символа
+        schemas.put("firstName", v.string().required());
+        schemas.put("lastName", v.string().required().minLength(2));
 
-        // Применяем схемы к MapSchema
         schema.shape(schemas);
 
-        // Первый набор данных для тестирования
         Map<String, String> human1 = new HashMap<>();
         human1.put("firstName", "John");
         human1.put("lastName", "Smith");
-        assertThat(schema.isValid(human1)).isTrue(); // Должен быть валидным
+        assertThat(schema.isValid(human1)).isTrue();
 
-        // Второй набор данных для тестирования
         Map<String, String> human2 = new HashMap<>();
         human2.put("firstName", "John");
         human2.put("lastName", null);
-        assertThat(schema.isValid(human2)).isFalse(); // Должен быть невалидным, т.к. lastName null
+        assertThat(schema.isValid(human2)).isFalse();
 
-        // Третий набор данных для тестирования
         Map<String, String> human3 = new HashMap<>();
         human3.put("firstName", "Anna");
         human3.put("lastName", "B");
-        assertThat(schema.isValid(human3)).isFalse(); // Должен быть невалидным, т.к. lastName короче 2 символов
+        assertThat(schema.isValid(human3)).isFalse();
     }
 }

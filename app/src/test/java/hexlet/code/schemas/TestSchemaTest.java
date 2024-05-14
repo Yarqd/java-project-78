@@ -22,12 +22,4 @@ public class TestSchemaTest {
         assertThat(schema.isValid("invalid")).isFalse();
     }
 
-//    @Test
-//    public void testValidate() {
-//        TestSchema schema = new TestSchema();
-//        assertThat(schema.isValid("valid")).isTrue();
-//        assertThat(schema.isValid("invalid")).isFalse();
-//
-//        assertThat(schema.isValid(MIN_LENGTH)).isFalse();
-//    }
 }

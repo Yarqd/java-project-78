@@ -1,7 +1,7 @@
 package hexlet.code.schemas;
 
 /**
- * This class represents the schema for string validation.
+ * Этот класс представляет схему для проверки строк.
  */
 public class StringSchema extends BaseSchema<String> {
 
@@ -9,8 +9,8 @@ public class StringSchema extends BaseSchema<String> {
     private String substring = null;
 
     /**
-     * Sets this schema as required.
-     * @return this schema instance
+     * Устанавливает эту схему как обязательную.
+     * @return экземпляр этой схемы
      */
     public StringSchema required() {
         super.required();
@@ -18,9 +18,9 @@ public class StringSchema extends BaseSchema<String> {
     }
 
     /**
-     * Sets the minimum length for the string.
-     * @param length the minimum length to set
-     * @return this schema instance
+     * Устанавливает минимальную длину для строки.
+     * @param length минимальная длина
+     * @return экземпляр этой схемы
      */
     public StringSchema minLength(int length) {
         this.minLength = length;
@@ -28,9 +28,9 @@ public class StringSchema extends BaseSchema<String> {
     }
 
     /**
-     * Sets the substring that the string should contain.
-     * @param substr the substring to check for
-     * @return this schema instance
+     * Устанавливает подстроку, которую должна содержать строка.
+     * @param substr подстрока для проверки
+     * @return экземпляр этой схемы
      */
     public StringSchema contains(String substr) {
         this.substring = substr;
@@ -38,9 +38,9 @@ public class StringSchema extends BaseSchema<String> {
     }
 
     /**
-     * Checks additional conditions specific to this schema.
-     * @param value the string to validate
-     * @return true if the string meets all conditions, false otherwise
+     * Проверяет дополнительные условия, специфичные для этой схемы.
+     * @param value строка для проверки
+     * @return true, если строка соответствует всем условиям, иначе false
      */
     @Override
     protected boolean checkAdditionalConditions(String value) {
