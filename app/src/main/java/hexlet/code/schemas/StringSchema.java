@@ -1,14 +1,17 @@
 package hexlet.code.schemas;
 
 /**
- * Этот класс представляет схему для проверки строк.
+ * This class represents the schema for string validation.
  */
 public class StringSchema extends BaseSchema<String> {
+
+    private int minLength = -1;
+    private String substring = null;
+
     /**
      * Устанавливает эту схему как обязательную.
      * @return экземпляр этой схемы
      */
-    @Override
     public StringSchema required() {
         super.required();
         addCheck(value -> !value.isEmpty());
@@ -16,22 +19,24 @@ public class StringSchema extends BaseSchema<String> {
     }
 
     /**
-     * Устанавливает минимальную длину для строки.
+     * Устанавливает минимальную длину строки.
      * @param length минимальная длина
      * @return экземпляр этой схемы
      */
     public StringSchema minLength(int length) {
-        addCheck(value -> value.length() >= length);
+        this.minLength = length;
+        addCheck(value -> value.length() >= minLength);
         return this;
     }
 
     /**
      * Устанавливает подстроку, которую должна содержать строка.
-     * @param substr подстрока для проверки
+     * @param substr подстрока
      * @return экземпляр этой схемы
      */
     public StringSchema contains(String substr) {
-        addCheck(value -> value.contains(substr));
+        this.substring = substr;
+        addCheck(value -> value.contains(substring));
         return this;
     }
 }
