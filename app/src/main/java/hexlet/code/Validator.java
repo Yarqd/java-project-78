@@ -18,8 +18,8 @@ public class Validator {
     }
 
     /**
-     * Создает и возвращает новый объект StringSchema.
-     * @return новый экземпляр StringSchema
+     * Создает и возвращает новый объект NumberSchema.
+     * @return новый экземпляр NumberSchema
      */
     public NumberSchema number() {
         return new NumberSchema();

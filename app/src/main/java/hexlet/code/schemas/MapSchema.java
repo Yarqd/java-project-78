@@ -3,22 +3,26 @@ package hexlet.code.schemas;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Схема для проверки объектов типа Map.
+ */
 public class MapSchema extends BaseSchema<Map<String, Object>> {
     private Integer requiredSize = null;
     private Map<String, BaseSchema<?>> shapeSchemas = new HashMap<>();
 
-    public final MapSchema required() {
+    public MapSchema required() {
         super.required();
+        addCheck(value -> value != null && value instanceof Map);
         return this;
     }
 
-    public final MapSchema sizeof(int size) {
+    public MapSchema sizeof(int size) {
         this.requiredSize = size;
         addCheck(value -> value.size() == size);
         return this;
     }
 
-    public final MapSchema shape(Map<String, BaseSchema<?>> schemas) {
+    public MapSchema shape(Map<String, BaseSchema<?>> schemas) {
         this.shapeSchemas = new HashMap<>(schemas);
         addCheck(value -> {
             for (Map.Entry<String, BaseSchema<?>> entry : shapeSchemas.entrySet()) {
