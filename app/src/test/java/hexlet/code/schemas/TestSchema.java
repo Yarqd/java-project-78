@@ -5,7 +5,6 @@ package hexlet.code.schemas;
  */
 public class TestSchema extends BaseSchema<String> {
     public TestSchema() {
-        // Добавляем проверку для тестирования
         addCheck(this::isValueValid);
     }
 

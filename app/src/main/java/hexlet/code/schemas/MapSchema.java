@@ -19,14 +19,14 @@ public class MapSchema extends BaseSchema<Map<String, Object>> {
     }
 
     public final MapSchema shape(Map<String, BaseSchema<?>> schemas) {
-        this.shapeSchemas = schemas;
+        this.shapeSchemas = new HashMap<>(schemas);
         addCheck(value -> {
             for (Map.Entry<String, BaseSchema<?>> entry : shapeSchemas.entrySet()) {
                 String key = entry.getKey();
                 BaseSchema<?> schema = entry.getValue();
                 Object val = value.get(key);
 
-                if (!value.containsKey(key) || !schema.isValid(val)) {
+                if (!schema.isValid(val)) {
                     return false;
                 }
             }

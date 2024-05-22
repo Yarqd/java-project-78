@@ -1,7 +1,7 @@
 package hexlet.code.schemas;
 
 /**
- * This class represents the schema for string validation.
+ * Этот класс представляет схему для валидации строк.
  */
 public class StringSchema extends BaseSchema<String> {
 
