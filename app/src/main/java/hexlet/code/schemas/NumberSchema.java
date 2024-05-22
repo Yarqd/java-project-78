@@ -1,38 +1,37 @@
 package hexlet.code.schemas;
 
+/**
+ * Этот класс представляет схему для проверки чисел.
+ */
 public class NumberSchema extends BaseSchema<Integer> {
-    private boolean isPositive = false;
-    private Integer minRange = null;
-    private Integer maxRange = null;
-
-    public final NumberSchema positive() {
-        this.isPositive = true;
-        return this;
-    }
-
-    public final NumberSchema range(int min, int max) {
-        this.minRange = min;
-        this.maxRange = max;
-        return this;
-    }
-
+    /**
+     * Устанавливает эту схему как обязательную.
+     * @return экземпляр этой схемы
+     */
     @Override
-    protected final boolean checkAdditionalConditions(Integer value) {
-        if (value == null) {
-            return true;
-        }
-        if (isPositive && value <= 0) {
-            return false;
-        }
-        if (minRange != null && (value < minRange || value > maxRange)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public final NumberSchema required() {
+    public NumberSchema required() {
         super.required();
+        addCheck(value -> value != null);
+        return this;
+    }
+
+    /**
+     * Устанавливает, что число должно быть положительным.
+     * @return экземпляр этой схемы
+     */
+    public NumberSchema positive() {
+        addCheck(value -> value > 0);
+        return this;
+    }
+
+    /**
+     * Устанавливает диапазон допустимых значений.
+     * @param min минимальное значение
+     * @param max максимальное значение
+     * @return экземпляр этой схемы
+     */
+    public NumberSchema range(int min, int max) {
+        addCheck(value -> value >= min && value <= max);
         return this;
     }
 }

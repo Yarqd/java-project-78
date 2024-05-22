@@ -4,16 +4,14 @@ package hexlet.code.schemas;
  * Этот класс представляет схему для проверки строк.
  */
 public class StringSchema extends BaseSchema<String> {
-
-    private int minLength = -1;
-    private String substring = null;
-
     /**
      * Устанавливает эту схему как обязательную.
      * @return экземпляр этой схемы
      */
+    @Override
     public StringSchema required() {
         super.required();
+        addCheck(value -> !value.isEmpty());
         return this;
     }
 
@@ -23,7 +21,7 @@ public class StringSchema extends BaseSchema<String> {
      * @return экземпляр этой схемы
      */
     public StringSchema minLength(int length) {
-        this.minLength = length;
+        addCheck(value -> value.length() >= length);
         return this;
     }
 
@@ -33,26 +31,7 @@ public class StringSchema extends BaseSchema<String> {
      * @return экземпляр этой схемы
      */
     public StringSchema contains(String substr) {
-        this.substring = substr;
+        addCheck(value -> value.contains(substr));
         return this;
-    }
-
-    /**
-     * Проверяет дополнительные условия, специфичные для этой схемы.
-     * @param value строка для проверки
-     * @return true, если строка соответствует всем условиям, иначе false
-     */
-    @Override
-    protected boolean checkAdditionalConditions(String value) {
-        if (value.isEmpty() && this.isRequired()) {
-            return false;
-        }
-        if (value.length() < minLength && minLength != -1) {
-            return false;
-        }
-        if (substring != null && !value.contains(substring)) {
-            return false;
-        }
-        return true;
     }
 }

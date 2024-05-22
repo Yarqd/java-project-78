@@ -1,11 +1,16 @@
 package hexlet.code.schemas;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 /**
  * Абстрактный базовый класс для всех схем.
- * @param <T> тип данных для проверки
+ * @param <T> тип данных для валидации
  */
 public abstract class BaseSchema<T> {
     private boolean isRequired = false;
+    private final List<Predicate<T>> checks = new ArrayList<>();
 
     /**
      * Устанавливает эту схему как обязательную.
@@ -13,33 +18,45 @@ public abstract class BaseSchema<T> {
      */
     public BaseSchema<T> required() {
         this.isRequired = true;
+        addCheck(value -> value != null);
         return this;
     }
 
     /**
-     * Проверяет, отмечена ли эта схема как обязательная.
-     * @return true, если эта схема обязательна, иначе false
+     * Добавляет проверку в список проверок.
+     * @param check проверка для добавления
+     */
+    protected void addCheck(Predicate<T> check) {
+        checks.add(check);
+    }
+
+    /**
+     * Проверяет, является ли эта схема обязательной.
+     * @return true если эта схема обязательна, иначе false
      */
     public boolean isRequired() {
-        return this.isRequired;
+        return isRequired;
     }
 
     /**
-     * Проверяет заданное значение на соответствие этой схеме.
+     * Проверяет значение по всем условиям.
      * @param value значение для проверки
-     * @return true, если значение действительно, иначе false
+     * @return true если значение соответствует всем условиям, иначе false
      */
-    public final boolean isValid(T value) {
-        if (value == null) {
-            return !this.isRequired;
+    public final boolean isValid(Object value) {
+        try {
+            T castedValue = (T) value;
+            if (castedValue == null) {
+                return !isRequired;
+            }
+            for (Predicate<T> check : checks) {
+                if (!check.test(castedValue)) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (ClassCastException e) {
+            return false;
         }
-        return checkAdditionalConditions(value);
     }
-
-    /**
-     * Абстрактный метод для проверки дополнительных условий, специфичных для каждого типа схемы.
-     * @param value значение для проверки
-     * @return true, если значение соответствует всем условиям, иначе false
-     */
-    protected abstract boolean checkAdditionalConditions(T value);
 }

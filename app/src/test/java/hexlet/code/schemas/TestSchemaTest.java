@@ -21,5 +21,4 @@ public class TestSchemaTest {
         assertThat(schema.isValid("valid")).isTrue();
         assertThat(schema.isValid("invalid")).isFalse();
     }
-
 }

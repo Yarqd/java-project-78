@@ -3,39 +3,53 @@ package hexlet.code.schemas;
 import java.util.Map;
 import java.util.HashMap;
 
-public class MapSchema extends BaseSchema<Map<String, String>> {
-    private Integer requiredSize = null;
-    private Map<String, ? extends BaseSchema<String>> shapeSchemas = new HashMap<>();
+/**
+ * Этот класс представляет схему для проверки объектов типа Map.
+ */
+public class MapSchema extends BaseSchema<Map<String, Object>> {
+    private Map<String, BaseSchema<?>> shapeSchemas = new HashMap<>();
 
-    public final MapSchema required() {
-        super.required();
-        return this;
-    }
-
-    public final MapSchema sizeof(int size) {
-        this.requiredSize = size;
-        return this;
-    }
-
-    public final MapSchema shape(Map<String, ? extends BaseSchema<String>> schemas) {
-        this.shapeSchemas = schemas;
-        return this;
-    }
-
+    /**
+     * Устанавливает эту схему как обязательную.
+     * @return экземпляр этой схемы
+     */
     @Override
-    protected final boolean checkAdditionalConditions(Map<String, String> value) {
-        if (requiredSize != null && (value == null || value.size() != requiredSize)) {
-            return false;
-        }
-        if (!shapeSchemas.isEmpty()) {
-            for (Map.Entry<String, ? extends BaseSchema<String>> entry : shapeSchemas.entrySet()) {
-                String key = entry.getKey();
-                BaseSchema<String> schema = entry.getValue();
-                String val = value != null ? value.get(key) : null;
+    public MapSchema required() {
+        super.required();
+        addCheck(value -> value != null);
+        return this;
+    }
 
-                if (!value.containsKey(key) || !schema.isValid(val)) {
-                    return false;
-                }
+    /**
+     * Устанавливает количество пар ключ-значение в объекте Map.
+     * @param size количество пар ключ-значение
+     * @return экземпляр этой схемы
+     */
+    public MapSchema sizeof(int size) {
+        addCheck(value -> value.size() == size);
+        return this;
+    }
+
+    /**
+     * Устанавливает набор схем для проверки значений по ключам объекта Map.
+     * @param schemas набор схем
+     * @return экземпляр этой схемы
+     */
+    public MapSchema shape(Map<String, BaseSchema<?>> schemas) {
+        this.shapeSchemas = schemas;
+        addCheck(this::validateShape);
+        return this;
+    }
+
+    private boolean validateShape(Map<String, Object> value) {
+        for (Map.Entry<String, BaseSchema<?>> entry : shapeSchemas.entrySet()) {
+            String key = entry.getKey();
+            BaseSchema<?> schema = entry.getValue();
+            Object val = value.get(key);
+
+            // Приведение типов к Object
+            if (!schema.isValid(val)) {
+                return false;
             }
         }
         return true;
