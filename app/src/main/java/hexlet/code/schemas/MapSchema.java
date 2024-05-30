@@ -36,10 +36,10 @@ public class MapSchema extends BaseSchema<Map<String, Object>> {
      * @param schemas карта схем для проверки
      * @return экземпляр этой схемы
      */
-    public MapSchema shape(Map<String, BaseSchema<?>> schemas) {
+    public MapSchema shape(Map<String, ? extends BaseSchema<?>> schemas) {
         this.shapeSchemas = new HashMap<>(schemas);
         addCheck(value -> {
-            for (Map.Entry<String, BaseSchema<?>> entry : shapeSchemas.entrySet()) {
+            for (Map.Entry<String, ? extends BaseSchema<?>> entry : shapeSchemas.entrySet()) {
                 String key = entry.getKey();
                 BaseSchema<?> schema = entry.getValue();
                 Object val = value.get(key);
